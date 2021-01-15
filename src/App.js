@@ -6,7 +6,7 @@ import {List, Input, Button} from "antd";
 import "antd/dist/antd.css";
 import {listNotes} from "./graphql/queries";
 import { v4 as uuid} from "uuid";
-import { createNote as CreateNote, deleteNote as DeleteNote} from "./graphql/mutations";
+import { createNote as CreateNote, deleteNote as DeleteNote, updateNote as UpdateNote} from "./graphql/mutations";
 
 const CLIENT_ID = uuid()
 
@@ -94,6 +94,23 @@ function App() {
     }
   }
 
+  //updateNote
+  async function updateNote(note) {
+    const index = state.notes.findIndex(n => n.id === note.id)
+    const notes = [...state.notes]
+    notes[index].completed = !note.completed
+    dispatch({ type: "SET_NOTES", notes})
+    try {
+      await API.graphql({
+        query: UpdateNote,
+        variables: { input: {id: note.id, completed: notes[index].completed}}
+      })
+      console.log("Note successfully updated!")
+    } catch(err) {
+      console.log("error: ", err)
+    }
+  }
+
   //handler to update form state when user interact with an input
   function onChange(e) {
     dispatch({ 
@@ -105,7 +122,10 @@ function App() {
   function renderItem(item) {
     return (
       <List.Item style={styles.item} actions={[
-        <p style={styles.p} onClick={() => deleteNote(item)}>Delete</p>
+        <p style={styles.p} onClick={() => deleteNote(item)}>Delete</p>,
+        <p style={styles.p} onClick={() => updateNote(item)}>
+          {item.completed ? "completed" : "mark completed"}
+        </p>
       ]}>
         <List.Item.Meta
           title={item.name}

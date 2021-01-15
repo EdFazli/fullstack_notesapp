@@ -62,19 +62,19 @@ function App() {
     fetchNotes()
   }, [])
 
-  //styles
-  const styles = {
-    container: {padding: 20},
-    input: {marginBottom: 10},
-    item: {textAlign: "left"},
-    p: {color: "#1890ff"}
-  }
-
   return (
     <div style={styles.container}>
       <List loading={state.loading} dataSource={state.notes} renderItem={renderItem} />
     </div>
   );
+}
+
+//styles
+const styles = {
+  container: {padding: 20},
+  input: {marginBottom: 10},
+  item: {textAlign: "left"},
+  p: {color: "#1890ff"}
 }
 
 export default App;

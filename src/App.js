@@ -86,10 +86,10 @@ function App() {
   function renderItem(item) {
     return (
       <List.Item style={styles.item}>
-        <List.Item.Meta>
+        <List.Item.Meta
           title={item.name}
           description={item.description}
-        </List.Item.Meta>
+        />
       </List.Item>
     )
   }
